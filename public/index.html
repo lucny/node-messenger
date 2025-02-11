@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jednoduchý chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; }
+        form { margin-bottom: 20px; }
+        textarea { width: 100%; height: 50px; }
+        .message { border-bottom: 1px solid #ddd; padding: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>Jednoduchý chat</h1>
+    
+    <form action="/send" method="post">
+        <input type="text" name="username" placeholder="Vaše jméno" required>
+        <textarea name="message" placeholder="Napište zprávu..." required></textarea>
+        <button type="submit">Odeslat</button>
+    </form>
+
+    <h2>Seznam zpráv</h2>
+    
+    <input type="text" id="search" placeholder="Hledat ve zprávách..." oninput="loadMessages()">
+    <div id="messages"></div>
+
+    <script>
+        async function loadMessages() {
+            const searchQuery = document.getElementById('search').value;
+            const response = await fetch('/messages?search=' + encodeURIComponent(searchQuery));
+            const messages = await response.json();
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = messages.length 
+                ? messages.map(msg =>
+                    `<div class="message"><strong>${msg.username}</strong>: ${msg.message} <small>(${msg.timestamp})</small></div>`
+                  ).join('')
+                : '<p>Žádné odpovídající zprávy.</p>';
+        }
+
+        loadMessages();
+        setInterval(loadMessages, 5000); // Automatická aktualizace každých 5 sekund
+    </script>
+</body>
+</html>
