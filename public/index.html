@@ -9,6 +9,7 @@
         form { margin-bottom: 20px; }
         textarea { width: 100%; height: 50px; }
         .message { border-bottom: 1px solid #ddd; padding: 5px 0; }
+        small { color: gray; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -26,19 +27,39 @@
     <div id="messages"></div>
 
     <script>
+        /* Načtení zpráv ze serveru a jejich zobrazení */
+        // loadMessages() je asynchronní funkce, která načte zprávy ze serveru a zobrazí je v HTML 
+        // asynchronní funkce vždy vrací Promise, který se vyřeší až po dokončení asynchronní operace
         async function loadMessages() {
+            // Získání hodnoty z inputu s ID "search"            
             const searchQuery = document.getElementById('search').value;
+            // Fetch API umožňuje asynchronně získat data ze serveru
+            // V tomto případě se získávají zprávy ze serveru na URL "/messages?search=..."
+            // encodeURIComponent() převede text na URL-safe formát - např. mezery na %20
+            // await zastaví běh kódu, dokud se nevyřeší Promise z fetch() - tedy dokud se nezískají data ze serveru
             const response = await fetch('/messages?search=' + encodeURIComponent(searchQuery));
+            // response.json() vrátí Promise, který se vyřeší až po převedení JSON dat na JavaScript objekt
             const messages = await response.json();
+            // Získání elementu s ID "messages" a vložení HTML kódu zpráv
             const messagesDiv = document.getElementById('messages');
+            // messagesDiv.innerHTML nastaví HTML obsah elementu - zde vloží zprávy ve formátu HTML
+            // použit ternární operátor, který zobrazí zprávy, pokud nějaké existují, jinak zobrazí text "Žádné odpovídající zprávy."
+            // messages.map() projde všechny zprávy a vytvoří pro každou zprávu HTML kód
+            // join('') spojí všechny HTML kódy zpráv do jednoho řetězce bez oddělovače
             messagesDiv.innerHTML = messages.length 
                 ? messages.map(msg =>
-                    `<div class="message"><strong>${msg.username}</strong>: ${msg.message} <small>(${msg.timestamp})</small></div>`
+                    `<div class="message">
+                        <strong>${msg.username}</strong>: ${msg.message} 
+                        <small>(${msg.timestamp})</small><br>
+                        <small>IP: ${msg.ip} | ${msg.userAgent}</small>
+                    </div>`
                   ).join('')
                 : '<p>Žádné odpovídající zprávy.</p>';
         }
 
+        // Zavolání funkce loadMessages() při načtení stránky a nastavení intervalu pro automatickou aktualizaci
         loadMessages();
+        // setInterval() opakuje volání funkce každých 5000 ms (5 sekund)
         setInterval(loadMessages, 5000); // Automatická aktualizace každých 5 sekund
     </script>
 </body>
