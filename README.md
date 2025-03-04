@@ -7,14 +7,14 @@ Tento projekt je jednoduchá chatovací aplikace, která umožňuje uživatelům
 
 ## 📌 Obsah
 
-- [Založení projektu](#-zalozeni-projektu)
-- [Podrobné vysvětlení projektu Node.js Messenger](#-projekt)
-- [Podrobný rozbor souboru `index.js`](#-index-js)
-- [Podrobný rozbor souboru `index.html`](#-index-html)
-- [Podrobný rozbor modulu `jsonStorage.js`](#-json-storage)
-- [Podrobný rozbor modulu `sqliteStorage.js`](#-sqlite-storage)
-- [Synchronní vs. Asynchronní programování na příkladu restaurace](#-sync-async)
-- [JSON – Co to je a jak ho využít?](#-json)
+- [Založení projektu](#zalozeni-projektu)
+- [Podrobné vysvětlení projektu Node.js Messenger](#projekt)
+- [Podrobný rozbor souboru `index.js`](#index-js)
+- [Podrobný rozbor souboru `index.html`](#index-html)
+- [Podrobný rozbor modulu `jsonStorage.js`](#json-storage)
+- [Podrobný rozbor modulu `sqliteStorage.js`](#sqlite-storage)
+- [Synchronní vs. Asynchronní programování na příkladu restaurace](#sync-async)
+- [JSON – Co to je a jak ho využít?](#json)
 
 ---
 # 📌 Založení projektu <a id="zalozeni-projektu"></a>
