@@ -16,9 +16,17 @@
     <h1>Jednoduchý chat</h1>
     
     <form action="/send" method="post">
-        <input type="text" name="username" placeholder="Vaše jméno" required>
-        <textarea name="message" placeholder="Napište zprávu..." required></textarea>
-        <button type="submit">Odeslat</button>
+        <div>
+            <label for="username">Vaše jméno:</label>
+            <input type="text" name="username" placeholder="Vaše jméno" required>
+        </div>
+        <div>
+            <label for="message">Zpráva:</label>
+            <textarea name="message" placeholder="Napište zprávu..." required></textarea>
+        </div>
+        <div>
+            <button type="submit">Odeslat</button>
+        </div>
     </form>
 
     <h2>Seznam zpráv</h2>
@@ -50,8 +58,8 @@
                 ? messages.map(msg =>
                     `<div class="message">
                         <strong>${msg.username}</strong>: ${msg.message} 
-                        <p><small>(${msg.timestamp})</small>, 
-                        <small>IP: ${msg.ip}</small></p>
+                        <small>(${msg.timestamp})</small><br>
+                        <small>IP: ${msg.ip} | ${msg.userAgent}</small>
                     </div>`
                   ).join('')
                 : '<p>Žádné odpovídající zprávy.</p>';
