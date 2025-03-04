@@ -50,8 +50,8 @@
                 ? messages.map(msg =>
                     `<div class="message">
                         <strong>${msg.username}</strong>: ${msg.message} 
-                        <small>(${msg.timestamp})</small><br>
-                        <small>IP: ${msg.ip} | ${msg.userAgent}</small>
+                        <p><small>(${msg.timestamp})</small>, 
+                        <small>IP: ${msg.ip}</small></p>
                     </div>`
                   ).join('')
                 : '<p>Žádné odpovídající zprávy.</p>';

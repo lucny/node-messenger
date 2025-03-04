@@ -16,6 +16,9 @@ const PORT = 3000;
 
 // Pole pro ukládání zpráv v paměti
 const messages = [];
+// Vyber způsob ukládání zpráv (odkomentuj požadovaný řádek)
+// const storage = require('./storage/jsonStorage'); // JSON soubor
+const storage = require('./storage/sqliteStorage'); // SQLite databáze
 
 /* Middleware - funkce, které zajišťují zpracování HTTP požadavků ještě před tím, než se dostanou k routám */
 // Middleware pro zpracování formulářových dat ve formátu application/x-www-form-urlencoded
@@ -55,13 +58,15 @@ app.post('/send', (req, res) => {
 
     // Uložení zprávy ve formě objektu do pole messages  
     // - objekt obsahuje jméno uživatele, zprávu, čas odeslání, IP adresu a User-Agent
-    messages.push({
-        username,
+    let msg = {
+        username: username,
         message,
-        timestamp: new Date().toLocaleString(),
-        ip: userIP,
-        userAgent
-    });
+        timestamp: new Date().toISOString(),
+        ip: userIP
+    };
+    messages.push(msg);
+    /* Uložení zprávy do souboru nebo databáze podle zvoleného způsobu ukládání */
+    storage.addMessage(msg.username, msg.message, msg.ip);
 
     // Přesměrování na hlavní stránku
     res.redirect('/');
@@ -75,6 +80,8 @@ app.get('/messages', (req, res) => {
     // - jsou to parametry za otazníkem v URL adrese, např. ?search=ahoj
     // - získání hodnoty parametru search a převedení na malá písmena (metoda toLowerCase())
     // - pokud není parametr search zadán, použije se prázdný řetězec
+    let messages = storage.getMessages();
+
     const search = req.query.search.toLowerCase() || "";
 
     // Filtrování zpráv podle hledaného řetězce
